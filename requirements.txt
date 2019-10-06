@@ -1,1 +1,8 @@
 aiohttp==3.5.4
+aiopg
+sqlalchemy
+trafaret
+aiopgsa
+trafaret-config
+aiohttp_swagger
+FormEncode

@@ -5,22 +5,18 @@ from userservice.settings import BASE_DIR, get_config
 
 DSN = "postgresql://{user}:{password}@{host}:{port}/{database}"
 
+USER_CONFIG_PATH = BASE_DIR / 'config' / 'userservice.yaml'
+USER_CONFIG = get_config(['-c', USER_CONFIG_PATH.as_posix()])
+
 ADMIN_DB_URL = DSN.format(
     user='postgres', password='postgres', database='postgres',
-    host='localhost', port=5432
+    host=USER_CONFIG['postgres']['host'], port=5432
 )
 
 admin_engine = create_engine(ADMIN_DB_URL, isolation_level='AUTOCOMMIT')
 
-USER_CONFIG_PATH = BASE_DIR / 'config' / 'userservice.yaml'
-USER_CONFIG = get_config(['-c', USER_CONFIG_PATH.as_posix()])
 USER_DB_URL = DSN.format(**USER_CONFIG['postgres'])
 user_engine = create_engine(USER_DB_URL)
-
-TEST_CONFIG_PATH = BASE_DIR / 'config' / 'userservice_test.yaml'
-TEST_CONFIG = get_config(['-c', TEST_CONFIG_PATH.as_posix()])
-TEST_DB_URL = DSN.format(**TEST_CONFIG['postgres'])
-test_engine = create_engine(TEST_DB_URL)
 
 
 def setup_db(config):
@@ -59,17 +55,17 @@ def teardown_db(config):
     conn.close()
 
 
-def create_tables(engine=test_engine):
+def create_tables(engine=user_engine):
     meta = MetaData()
     meta.create_all(bind=engine, tables=[user])
 
 
-def drop_tables(engine=test_engine):
+def drop_tables(engine=user_engine):
     meta = MetaData()
     meta.drop_all(bind=engine, tables=[user])
 
 
-def sample_data(engine=test_engine):
+def sample_data(engine=user_engine):
     conn = engine.connect()
     conn.execute(user.insert(), [
         {'name': 'Bruce Wayne',

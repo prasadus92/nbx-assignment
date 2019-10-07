@@ -1,7 +1,7 @@
 import os
 import re
 
-from setuptools import find_packages, setup
+from setuptools import setup
 
 
 def read_version():
@@ -18,20 +18,25 @@ def read_version():
             raise RuntimeError(msg)
 
 
-install_requires = ['aiohttp',
-                    'aiopgsa',
-                    'aiohttp_swagger',
-                    'trafaret-config',
-                    'aiohttp_validate',
-                    'ujson',
-                    'trafaret',
-                    'aiohttp_swagger',
-                    'formencode']
+install_requires = ['aiohttp==3.5.4',
+                    'sqlalchemy==1.3.9',
+                    'aiohttp_validate==1.1.0',
+                    'ujson==1.35',
+                    'trafaret==1.2.0',
+                    'aiopg==1.0.0',
+                    'trafaret-config==2.0.2',
+                    'aiohttp_swagger==1.0.9',
+                    'formencode==1.3.1'
+                    ]
 
-setup(name='user-service',
+setup(name='userservice',
       version=read_version(),
       description='NBX User Service',
       platforms=['POSIX'],
-      packages=find_packages(),
+      author='NBX',
+      author_email='developer@nbx.com',
+      packages=['userservice', ],
+      include_package_data=True,
       install_requires=install_requires,
-      zip_safe=False)
+      zip_safe=False,
+      )

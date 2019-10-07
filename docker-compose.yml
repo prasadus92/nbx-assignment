@@ -1,4 +1,4 @@
-version: '3.1'
+version: '3.7'
 services:
 
   app:
@@ -7,10 +7,19 @@ services:
       - "8080:8080"
     healthcheck:
       test: ["CMD", "curl", "-f", "localhost:8080"]
+    depends_on:
+      - postgres
+    command: ["/app/wait-for-postgres.sh", "postgres", "sh", "/app/run-application.sh"]
+    environment:
+      - POSTGRES_PASSWORD=postgres
 
-  db:
+  postgres:
     image: postgres:10
     ports:
       - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
     volumes:
       - ./storage/postgresql/data:/var/lib/postgresql/data

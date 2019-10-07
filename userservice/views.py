@@ -12,10 +12,7 @@ from . import db
 
 LOGGER = logging.getLogger(__name__)
 
-routes = web.RouteTableDef()
 
-
-@routes.get('/')
 async def health(request):
     """
     ---
@@ -31,7 +28,6 @@ async def health(request):
     return web.json_response({'name': 'user-service'})
 
 
-@routes.get('/users')
 # ToDo: Pagination
 async def get_users(request):
     """
@@ -51,12 +47,11 @@ async def get_users(request):
         return web.json_response(body=json.dumps(users, cls=CustomEncoder), status=HTTP_200_OK)
 
 
-@routes.post('/users')
 @validate(
     request_schema=USER_CREATE_REQUEST_SCHEMA,
     response_schema=USER_CREATE_RESPONSE_SCHEMA,
 )
-async def create_user(request):
+async def create_user(self, request):
     """
     ---
     description: This end-point allows to create a new user.
@@ -91,7 +86,6 @@ async def create_user(request):
         return web.json_response(body=json.dumps(user, cls=CustomEncoder), status=HTTP_201_CREATED)
 
 
-@routes.get('/users/{user_id}')
 async def get_user(request):
     """
     ---
@@ -101,7 +95,7 @@ async def get_user(request):
     produces:
     - application/json
     parameters:
-    - in: query
+    - in: path
       name: user_id
       type: string
     responses:
@@ -121,12 +115,11 @@ async def get_user(request):
         return web.json_response(body=json.dumps(user, cls=CustomEncoder), status=HTTP_200_OK)
 
 
-@routes.put('/users/{user_id}')
 @validate(
     request_schema=USER_UPDATE_REQUEST_SCHEMA,
     response_schema=USER_UPDATE_RESPONSE_SCHEMA,
 )
-async def update_user(request):
+async def update_user(self, request):
     """
     ---
     description: This end-point allows to update the details of an existing user.
@@ -135,7 +128,7 @@ async def update_user(request):
     produces:
     - application/json
     parameters:
-    - in: query
+    - in: path
       name: user_id
       type: string
     - in: body
@@ -167,7 +160,6 @@ async def update_user(request):
         return web.json_response(body=json.dumps(user, cls=CustomEncoder), status=HTTP_200_OK)
 
 
-@routes.delete('/users/{user_id}')
 async def delete_user(request):
     """
     ---
@@ -177,7 +169,7 @@ async def delete_user(request):
     produces:
     - application/json
     parameters:
-    - in: query
+    - in: path
       name: user_id
       type: string
     responses:

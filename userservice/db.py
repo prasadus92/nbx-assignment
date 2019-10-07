@@ -67,9 +67,7 @@ async def create_user(conn, user_name, user_email):
 
 
 async def get_user(conn, user_id):
-    result = await conn.execute(
-        user.select(user.c.id, user.c.name, user.c.email)
-            .where(user.c.id == user_id))
+    result = await conn.execute(select([user.c.id, user.c.name, user.c.email]).where(user.c.id == user_id))
     user_record = await result.first()
 
     if not user_record:
@@ -96,7 +94,8 @@ async def update_user(conn, user_id, user_name, user_email):
 async def delete_user(conn, user_id):
     result = await conn.execute(
         user.delete()
-            .where(user.c.id == user_id))
+            .where(user.c.id == user_id)
+            .returning(user.c.id))
     user_record = await result.fetchone()
     if not user_record:
         raise RecordNotFound(USER_NOT_EXISTS_MSG.format(user_id))

@@ -19,9 +19,14 @@ def read_version():
 
 
 install_requires = ['aiohttp',
-                    'aiopg[sa]',
+                    'aiopgsa',
                     'aiohttp_swagger',
-                    'trafaret-config']
+                    'trafaret-config',
+                    'aiohttp_validate',
+                    'ujson',
+                    'trafaret',
+                    'aiohttp_swagger',
+                    'formencode']
 
 setup(name='user-service',
       version=read_version(),

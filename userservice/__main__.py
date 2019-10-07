@@ -1,5 +1,5 @@
 import sys
 
-from userservice.main import main
+from userservice.app import main
 
 main(sys.argv[1:])

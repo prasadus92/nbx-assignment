@@ -131,3 +131,6 @@ dmypy.json
 # IntelliJ
 .idea
 
+# Docker
+storage
+

@@ -117,3 +117,7 @@ After you've made changes, run the above two commands again
 ### View logs
 
 From within the project, run `docker-compose logs -f app`
+
+### Access API Documentation
+
+The API documentation is provided via Swagger and is accessible at - http://localhost:8080/api/doc

@@ -2,6 +2,8 @@ import json
 
 from aiohttp import web
 
+from userservice.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_404_NOT_FOUND, HTTP_400_BAD_REQUEST
+
 
 def json_error(status_code: int, exception: Exception) -> web.Response:
     return web.Response(
@@ -16,15 +18,13 @@ async def error_middleware(app, handler):
     async def middleware_handler(request):
         try:
             response = await handler(request)
-            if response.status == 404 or response.status == 400:
+            if response.status == HTTP_404_NOT_FOUND or response.status == HTTP_400_BAD_REQUEST:
                 return json_error(response.status, Exception(response.message))
             return response
         except web.HTTPException as ex:
-            if ex.status == 404:
-                return json_error(ex.status, ex)
-            raise
+            return json_error(ex.status, ex)
         except Exception as e:
-            return json_error(500, e)
+            return json_error(HTTP_500_INTERNAL_SERVER_ERROR, e)
 
     return middleware_handler
 

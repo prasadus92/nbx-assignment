@@ -16,7 +16,7 @@ LOGGER = logging.getLogger(__name__)
 async def health(request):
     """
     ---
-    description: This end-point allow to test that service is up.
+    description: This end-point allows to test whether the service is up.
     tags:
     - Health check
     produces:

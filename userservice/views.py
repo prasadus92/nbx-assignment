@@ -8,7 +8,6 @@ from userservice.encoders import CustomEncoder
 from userservice.schema import USER_CREATE_REQUEST_SCHEMA, USER_CREATE_RESPONSE_SCHEMA, USER_UPDATE_REQUEST_SCHEMA, \
     USER_UPDATE_RESPONSE_SCHEMA
 from userservice.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
-from userservice.validators import validate_email
 from . import db
 
 LOGGER = logging.getLogger(__name__)
@@ -81,7 +80,6 @@ async def create_user(self, request):
 
     name = data['name']
     email = data['email']
-    email = validate_email(email)
 
     async with request.app['db'].acquire() as conn:
         try:
@@ -169,7 +167,6 @@ async def update_user(self, request):
         pass
     try:
         email = data['email']
-        email = validate_email(email)
     except KeyError:
         pass
     if name is None and email is None:

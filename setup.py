@@ -26,7 +26,8 @@ install_requires = ['aiohttp==3.5.4',
                     'aiopg==1.0.0',
                     'trafaret-config==2.0.2',
                     'aiohttp_swagger==1.0.9',
-                    'formencode==1.3.1'
+                    'formencode==1.3.1',
+                    'email-validator==1.0.4'
                     ]
 
 setup(name='userservice',

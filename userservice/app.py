@@ -5,6 +5,7 @@ from aiohttp import web
 from aiohttp_swagger import *
 
 from userservice.db import close_pg, init_pg
+from userservice.middlewares import setup_middlewares
 from userservice.routes import setup_routes
 from userservice.settings import get_config
 
@@ -22,6 +23,7 @@ def init_app(argv=None):
     app.on_startup.append(init_pg)
     app.on_cleanup.append(close_pg)
 
+    setup_middlewares(app)
     setup_swagger(app)
 
     return app

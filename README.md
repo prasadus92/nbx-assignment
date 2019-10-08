@@ -121,3 +121,9 @@ From within the project, run `docker-compose logs -f app`
 ### Access API Documentation
 
 The API documentation is provided via Swagger and is accessible at - http://localhost:8080/api/doc
+
+### ToDo List
+
+1. Add tests
+2. Try finding an alternative to using `wait-for-postgres.sh`; it currently requires PostgresSQL client to be installed on within the Docker.
+3. Add API versioning.

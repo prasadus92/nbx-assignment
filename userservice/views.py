@@ -7,7 +7,7 @@ from aiohttp_validate import validate
 from userservice.encoders import CustomEncoder
 from userservice.schema import USER_CREATE_REQUEST_SCHEMA, USER_CREATE_RESPONSE_SCHEMA, USER_UPDATE_REQUEST_SCHEMA, \
     USER_UPDATE_RESPONSE_SCHEMA
-from userservice.status import HTTP_200_OK, HTTP_201_CREATED
+from userservice.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from . import db
 
 LOGGER = logging.getLogger(__name__)
@@ -16,7 +16,7 @@ LOGGER = logging.getLogger(__name__)
 async def health(request):
     """
     ---
-    description: This end-point allow to test that service is up.
+    description: This end-point allows to test whether the service is up.
     tags:
     - Health check
     produces:
@@ -77,10 +77,15 @@ async def create_user(self, request):
     """
     data = await request.json(loads=json.loads)
     LOGGER.info("### Received a new CREATE user request with payload - %s ###", data)
+
+    name = data['name']
+    email = data['email']
+
     async with request.app['db'].acquire() as conn:
         try:
-            user = await db.create_user(conn, data['name'], data['email'])
+            user = await db.create_user(conn, name, email)
         except Exception as e:
+            LOGGER.error(str(e))
             raise web.HTTPBadRequest(text=str(e))
 
         return web.json_response(body=json.dumps(user, cls=CustomEncoder), status=HTTP_201_CREATED)
@@ -110,6 +115,7 @@ async def get_user(request):
         try:
             user = await db.get_user(conn, user_id)
         except db.RecordNotFound as e:
+            LOGGER.error(str(e))
             raise web.HTTPNotFound(text=str(e))
 
         return web.json_response(body=json.dumps(user, cls=CustomEncoder), status=HTTP_200_OK)
@@ -151,10 +157,26 @@ async def update_user(self, request):
     user_id = request.match_info['user_id']
     LOGGER.info("### Received a new UPDATE user request for User ID - %s ###", user_id)
     data = await request.json(loads=json.loads)
+
+    # ToDo: If there is a better validation approach.
+    name = None
+    email = None
+    try:
+        name = data['name']
+    except KeyError:
+        pass
+    try:
+        email = data['email']
+    except KeyError:
+        pass
+    if name is None and email is None:
+        raise web.HTTPBadRequest(text="At least one of name or email has to be supplied for the update")
+
     async with request.app['db'].acquire() as conn:
         try:
-            user = await db.update_user(conn, user_id, data['name'], data['email'])
+            user = await db.update_user(conn, user_id, name, email)
         except db.RecordNotFound as e:
+            LOGGER.error(str(e))
             raise web.HTTPNotFound(text=str(e))
 
         return web.json_response(body=json.dumps(user, cls=CustomEncoder), status=HTTP_200_OK)
@@ -184,5 +206,6 @@ async def delete_user(request):
         try:
             await db.delete_user(conn, user_id)
         except db.RecordNotFound as e:
+            LOGGER.error(str(e))
             raise web.HTTPNotFound(text=str(e))
-    return web.json_response(None, status=204)
+    return web.json_response(None, status=HTTP_204_NO_CONTENT)

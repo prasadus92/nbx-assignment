@@ -78,11 +78,25 @@ async def get_user(conn, user_id):
 
 
 async def update_user(conn, user_id, user_name, user_email):
-    result = await conn.execute(
-        user.update()
-            .returning(user.c.id, user.c.name, user.c.email)
-            .where(user.c.id == user_id)
-            .values(name=user_name, email=user_email))
+    if user_name is None:
+        result = await conn.execute(
+            user.update()
+                .returning(user.c.id, user.c.name, user.c.email)
+                .where(user.c.id == user_id)
+                .values(email=user_email))
+    elif user_email is None:
+        result = await conn.execute(
+            user.update()
+                .returning(user.c.id, user.c.name, user.c.email)
+                .where(user.c.id == user_id)
+                .values(name=user_name))
+    else:
+        result = await conn.execute(
+            user.update()
+                .returning(user.c.id, user.c.name, user.c.email)
+                .where(user.c.id == user_id)
+                .values(name=user_name, email=user_email))
+
     user_record = await result.fetchone()
     if not user_record:
         raise RecordNotFound(USER_NOT_EXISTS_MSG.format(user_id))

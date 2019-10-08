@@ -93,11 +93,18 @@ This is a User Service API. It's purpose is to manage user resources. It should 
 
 ### Build
 
-From within the project, run `docker-compose build`
+From within the project, run `docker-compose build app`
 
 ### Run
 
 From within the project, run `docker-compose up -d`
+
+This will also run the PostgreSQL as the application database.
+
+**NOTE**: 
+
+1. Application configuration is supplied via `userservice.yaml` file located under `config`. This is currently organized into environment specific files like `userservice-docker.yaml` (for Docker).
+2. If you are running the application from an IDE, run the DB initialization script `init-db.py` before starting the application (also, you could use `run-application.sh`).
 
 ### Verify the service is up and running
 
@@ -110,3 +117,13 @@ After you've made changes, run the above two commands again
 ### View logs
 
 From within the project, run `docker-compose logs -f app`
+
+### Access API Documentation
+
+The API documentation is provided via Swagger and is accessible at - http://localhost:8080/api/doc
+
+### ToDo List
+
+1. Add tests
+2. Try finding an alternative to using `wait-for-postgres.sh`; it currently requires PostgresSQL client to be installed on within the Docker.
+3. Add API versioning.

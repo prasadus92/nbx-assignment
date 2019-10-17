@@ -1,4 +1,4 @@
-USER_CREATE_REQUEST_SCHEMA = {
+CREATE_USER_REQUEST_SCHEMA = {
     "type": "object",
     "properties": {
         "name": {"type": "string"},
@@ -8,7 +8,7 @@ USER_CREATE_REQUEST_SCHEMA = {
     "additionalProperties": False
 }
 
-USER_CREATE_RESPONSE_SCHEMA = {
+CREATE_USER_RESPONSE_SCHEMA = {
     "type": "object",
     "properties": {
         "id": {"type": "string"},
@@ -17,7 +17,7 @@ USER_CREATE_RESPONSE_SCHEMA = {
     }
 }
 
-USER_UPDATE_REQUEST_SCHEMA = {
+UPDATE_USER_REQUEST_SCHEMA = {
     "type": "object",
     "properties": {
         "name": {"type": "string"},
@@ -26,7 +26,7 @@ USER_UPDATE_REQUEST_SCHEMA = {
     "additionalProperties": False
 }
 
-USER_UPDATE_RESPONSE_SCHEMA = {
+UPDATE_USER_RESPONSE_SCHEMA = {
     "type": "object",
     "properties": {
         "id": {"type": "string"},

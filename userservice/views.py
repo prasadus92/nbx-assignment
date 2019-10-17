@@ -5,8 +5,8 @@ from aiohttp import web
 from aiohttp_validate import validate
 
 from userservice.encoders import CustomEncoder
-from userservice.schema import USER_CREATE_REQUEST_SCHEMA, USER_CREATE_RESPONSE_SCHEMA, USER_UPDATE_REQUEST_SCHEMA, \
-    USER_UPDATE_RESPONSE_SCHEMA
+from userservice.schema import CREATE_USER_REQUEST_SCHEMA, CREATE_USER_RESPONSE_SCHEMA, UPDATE_USER_REQUEST_SCHEMA, \
+    UPDATE_USER_RESPONSE_SCHEMA
 from userservice.status import HTTP_200_OK, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from . import db
 
@@ -48,8 +48,8 @@ async def get_users(request):
 
 
 @validate(
-    request_schema=USER_CREATE_REQUEST_SCHEMA,
-    response_schema=USER_CREATE_RESPONSE_SCHEMA,
+    request_schema=CREATE_USER_REQUEST_SCHEMA,
+    response_schema=CREATE_USER_RESPONSE_SCHEMA,
 )
 async def create_user(self, request):
     """
@@ -122,8 +122,8 @@ async def get_user(request):
 
 
 @validate(
-    request_schema=USER_UPDATE_REQUEST_SCHEMA,
-    response_schema=USER_UPDATE_RESPONSE_SCHEMA,
+    request_schema=UPDATE_USER_REQUEST_SCHEMA,
+    response_schema=UPDATE_USER_RESPONSE_SCHEMA,
 )
 async def update_user(self, request):
     """

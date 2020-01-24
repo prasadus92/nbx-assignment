@@ -93,13 +93,13 @@ This is a User Service API. It's purpose is to manage user resources. It should 
 
 ### Build
 
-From within the project, run `docker-compose build app`
+From the root directory of the project, run `docker-compose build app`
 
 ### Run
 
 From within the project, run `docker-compose up -d`
 
-This will also run the PostgreSQL as the application database.
+This will also run PostgreSQL as the application database.
 
 **NOTE**: 
 
@@ -112,11 +112,11 @@ Running `curl http://localhost:8080` should return `{"name": "user-service"}`
 
 ### Apply Changes
 
-After you've made changes, run the above two commands again
+After you've made changes, just run the above two commands again
 
 ### View logs
 
-From within the project, run `docker-compose logs -f app`
+From the root directory of the project, run `docker-compose logs -f app`
 
 ### Access API Documentation
 
@@ -125,5 +125,5 @@ The API documentation is provided via Swagger and is accessible at - http://loca
 ### ToDo List
 
 1. Add tests
-2. Try finding an alternative to using `wait-for-postgres.sh`; it currently requires PostgresSQL client to be installed on within the Docker.
+2. Try finding an alternative to using `wait-for-postgres.sh`; it currently requires PostgreSQL client to be installed on the Docker container.
 3. Add API versioning.
